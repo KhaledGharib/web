@@ -49,6 +49,35 @@ app.get("/proxy/:query", (req, res) => {
     });
 });
 
+app.get("/proxy/:episodes", (req, res) => {
+  const link = req.params.episodes; // Retrieve the selected link from the URL parameter
+  const url = `https://web-4ra5.onrender.com/proxy/${link}`;
+
+  axios
+    .get(url)
+    .then((response) => {
+      const html = response.data;
+      const $ = cheerio.load(html);
+      const links = [];
+
+      $(".season-episodes").each(function () {
+        const link = $(this).find("a").attr("href");
+        const title = $(this).find("span");
+        const b = $(this).find("b");
+        links.push({
+          title,
+          link,
+          b,
+        });
+      });
+
+      res.json(links);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error occurred while fetching data" });
+    });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
