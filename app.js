@@ -31,13 +31,13 @@ app.get("/proxy/:query", (req, res) => {
       const $ = cheerio.load(html);
       const links = [];
 
-      $(".item_wrapper").each(function () {
-        // const link = $(this).find("a").attr("href");
-        // const title = $(this).find("a").attr("title");
+      $(".type_item_box").each(function () {
+        const link = $(this).find("a").attr("href");
+        const title = $(this).find("a").attr("title");
         const img = $(this).find(".item_img.imaged").attr("src");
         links.push({
-          // title,
-          // link,
+          title,
+          link,
           img,
         });
       });
