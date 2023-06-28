@@ -6,7 +6,6 @@ const port = process.env.PORT || 8000;
 
 app.use(express.json());
 
-// CORS configuration
 app.use((req, res, next) => {
   const allowedOrigins = [
     "https://statuesque-cuchufli-c71e7e.netlify.app",
@@ -21,31 +20,33 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/proxy/:query", async (req, res) => {
-  try {
-    const query = req.params.query;
-    const url = `https://3sktv.org/?s=${query}`;
+app.get("/proxy/:query", (req, res) => {
+  const query = req.params.query;
+  const url = `https://3sktv.org/?s=${query}`;
 
-    const response = await axios.get(url);
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const links = [];
+  axios
+    .get(url)
+    .then((response) => {
+      const html = response.data;
+      const $ = cheerio.load(html);
+      const links = [];
 
-    $(".type_item_box").each(function () {
-      const link = $(this).find("a").attr("href");
-      const title = $(this).find("a").attr("title");
-      const img = $(this).find(".item_img.imaged").attr("src");
-      links.push({
-        title,
-        link,
-        img,
+      $(".item_wrapper").each(function () {
+        // const link = $(this).find("a").attr("href");
+        // const title = $(this).find("a").attr("title");
+        const img = $(this).find(".item_img.imaged").attr("src");
+        links.push({
+          // title,
+          // link,
+          img,
+        });
       });
-    });
 
-    res.json(links);
-  } catch (error) {
-    res.status(500).json({ error: "Error occurred while fetching data" });
-  }
+      res.json(links);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Error occurred while fetching data" });
+    });
 });
 
 app.listen(port, () => {
