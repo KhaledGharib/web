@@ -2,7 +2,7 @@ const axios = require("axios");
 const express = require("express");
 const cheerio = require("cheerio");
 const app = express();
-const PORT = 3030;
+const port = process.env.PORT || 8000;
 
 app.use(express.json());
 
@@ -46,6 +46,6 @@ app.get("/proxy/:query", (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
