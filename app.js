@@ -49,9 +49,9 @@ app.get("/proxy/:query", (req, res) => {
     });
 });
 
-app.get("/proxy/:episodes", (req, res) => {
+app.get("/selected/:episodes", (req, res) => {
   const link = req.params.episodes; // Retrieve the selected link from the URL parameter
-  const url = `https://web-4ra5.onrender.com/proxy/${link}`;
+  const url = `${link}`;
 
   axios
     .get(url)
