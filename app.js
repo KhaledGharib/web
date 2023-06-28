@@ -7,7 +7,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 
 app.use((req, res, next) => {
-  const allowedOrigins = ["https://statuesque-cuchufli-c71e7e.netlify.app","http://localhost:3000/"]; // Add any other origins you want to allow
+  const allowedOrigins = ["https://statuesque-cuchufli-c71e7e.netlify.app","http://localhost:3000"]; // Add any other origins you want to allow
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
